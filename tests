@@ -1,0 +1,58 @@
+strings
+strings/ascii
+rand
+
+
+
+
+package domain
+
+import (
+	"errors"
+	"strings"
+)
+
+const (
+	SEK = iota
+	USD
+	EUR
+)
+
+// CountryToCurrency represents connection between system country and the currency,
+// used to map country alpha2 code to currency struct.
+var CountryToCurrency = map[string]Currency{
+	"SE": SEK,
+	"DE": EUR,
+}
+
+type Currency int
+
+func (c Currency) String() string {
+	return [...]string{"SEK", "USD", "EUR"}[c]
+}
+
+func StringToCurrency(currency string) Currency {
+	switch currency {
+	case "SEK":
+		return SEK
+	case "USD":
+		return USD
+	case "EUR":
+		return EUR
+	}
+	return SEK
+}
+
+func stringToCurrency(cs string) (Currency, error) {
+	switch strings.ToUpper(cs) {
+	case "SEK":
+		return SEK, nil
+	case "EUR":
+		return EUR, nil
+	case "USD":
+		return USD, nil
+	default:
+		return SEK, errors.New("unsupported currency")
+	}
+}
+
